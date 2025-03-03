@@ -172,6 +172,9 @@ const UserSetting = () => {
           <Form.Item label="创建时间" name="dates">
             <DatePicker.RangePicker mode={['date', 'date']} format="YYYY-MM-DD" />
           </Form.Item>
+          <Form.Item style={{ display: 'none' }} label="部门" name="deptId">
+            <Input/>
+          </Form.Item>
           <Form.Item>
             <Button htmlType="submit">搜索</Button>
           </Form.Item>

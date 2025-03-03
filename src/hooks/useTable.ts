@@ -20,6 +20,7 @@ export function useTable<T>(form: FormInstance, url: string, formatParams?: (par
 
   const getList = useCallback(() => {
     const formVals = form.getFieldsValue()
+    console.log(formVals)
     let params: any = {...formVals, ...pagination}
     if (formatParams) {
       params = formatParams(params)
