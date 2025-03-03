@@ -1,0 +1,20 @@
+.userContent {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-column-gap: 10px;
+  overflow: hidden;
+
+  & :global {
+    .tree {
+      height: var(--table-wrapper-height);
+      box-sizing: border-box;
+      padding: 10px;
+      background-color: var(--blockbg);
+      border-radius: 8px;
+      overflow: auto auto;
+      .ant-tree-title {
+        white-space: nowrap;
+      }
+    }
+  }
+}

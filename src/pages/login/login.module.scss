@@ -1,0 +1,88 @@
+.login {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+
+  & :global {
+    .left {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        154deg,
+        #07070915 30%,
+        hsl(212 100% 45% / 30%) 48%,
+        #07070915 64%
+      );
+      background-color: var(--background);
+      & > h1 {
+        margin-bottom: 20px;
+        position: relative;
+        color: #333;
+        font-size: 100px;
+        font-weight: bold;
+        &::after {
+          content: "X-Admin";
+          /* 使两者重叠 */
+          position: absolute;
+          left: 0;
+          top: 0;
+          /* 全透明色 */
+          color: transparent;
+          /* 可以用图片,以下有兼容性问题，暂考虑Chrome浏览器 */
+          background: -webkit-linear-gradient(left, #1677ff, #55ff7f, #55ff7f, #1677ff);
+          /* 按文字内容裁剪背景 */
+          background-clip: text;
+          -webkit-background-clip: text;
+          /* 绘制一个圆 */
+          clip-path: circle(100px at 0% 50%);
+          -webkit-clip-path: circle(100px at 0% 50%);
+          animation: light 8s infinite;
+        }
+      }
+    }
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: 20px 40px;
+      background-color: var(--login-bg);
+
+      .theme {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        text-align: right;
+      }
+
+      .ant-input-group-addon {
+        padding: 0;
+        border: none;
+      }
+
+      .code-img {
+        height: 40px;
+      }
+    }
+  }
+
+  @keyframes:global (light) {
+    0% {
+      clip-path: circle(100px at 0% 50%);
+      -webkit-clip-path: circle(100px at 0% 50%);
+    }
+
+    50% {
+      clip-path: circle(100px at 100% 50%);
+      -webkit-clip-path: circle(100px at 100% 50%);
+    }
+
+    100% {
+      clip-path: circle(100px at 0% 50%);
+      -webkit-clip-path: circle(100px at 0% 50%);
+    }
+  }
+}

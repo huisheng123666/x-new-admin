@@ -1,0 +1,47 @@
+.home {
+  height: 100%;
+  overflow-y: scroll;
+
+  & :global {
+    .total {
+      padding-right: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-column-gap: 20px;
+
+      .item {
+        padding: 24px;
+        background-color: var(--blockbg);
+        border-radius: 8px;
+        border: 1px solid var(--blockborder);
+        display: grid;
+        align-items: center;
+        grid-template-areas: 'a b' 'a c';
+        grid-template-columns: 64px 1fr;
+        grid-column-gap: 16px;
+        grid-row-gap: 8px;
+        &>img {
+          grid-area: a;
+          width: 64px;
+          height: 64px;
+        }
+        &>h6 {
+          line-height: 1;
+          font-size: 28px;
+          font-weight: bold;
+        }
+        &>p {
+          font-size: 16px;
+          opacity: 0.6;
+        }
+      }
+    }
+    .hot-line {
+      margin-top: 20px;
+      margin-right: 10px;
+      background-color: var(--blockbg);
+      border-radius: 8px;
+      border: 1px solid var(--blockborder);
+    }
+  }
+}
