@@ -116,7 +116,7 @@ const UserSetting = () => {
       minWidth: 80,
       key: "deptName",
       render: (_, record) => {
-        return record.dept.deptName
+        return record.dept?.deptName
       }
     },
     {
