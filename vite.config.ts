@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/dev-api": {
-        target: "http://h.xmw.monster:8080",
+        target: "http://45.192.105.111:8080",
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/dev-api/, ""),
       },

@@ -1,4 +1,4 @@
-import {FC, Suspense, useEffect, useRef, useState} from "react";
+import {FC, Suspense, useCallback, useEffect, useRef, useState} from "react";
 import styles from "./layout.module.scss";
 import { useLocation, useOutlet } from "react-router-dom";
 import Slider from "./slider";
@@ -14,6 +14,8 @@ import { useAppTheme } from "@/context/theme";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import PageLoading from "@/components/page-loading/page-loading";
 import {useUser} from "@/context/user.tsx";
+import {animatePage} from "@/common/utils";
+import {getSysTheme} from "@/common/config";
 
 const Layout: FC = () => {
   const { setAppTheme, appTheme, slideExpand, setSlideExpand } = useAppTheme();
@@ -37,6 +39,27 @@ const Layout: FC = () => {
     setBreadItems(deepMenu(routes, location.pathname, []))
   }, [routes, location]);
 
+  const changeTheme = useCallback((e: any) => {
+    const sysTheme = getSysTheme()
+    if (appTheme === 'system' && e.target.value === sysTheme) {
+      setAppTheme(e.target.value)
+      return
+    }
+    if (e.target.value === 'system') {
+      console.log(appTheme, sysTheme)
+      if (appTheme !== 'system' && sysTheme !== appTheme) {
+        animatePage(e.nativeEvent, sysTheme)
+      }
+      // console.log(sysTheme, appTheme)
+    } else {
+      animatePage(e.nativeEvent, e.target.value)
+    }
+    setTimeout(() => {
+      setAppTheme(e.target.value)
+    }, 1)
+    // console.log(e.nativeEvent)
+  }, [appTheme, setAppTheme])
+
   return (
     <div className={styles.layout}>
       <Slider />
@@ -51,7 +74,7 @@ const Layout: FC = () => {
         />
         <Radio.Group
           value={appTheme}
-          onChange={(e) => setAppTheme(e.target.value)}
+          onChange={changeTheme}
           size="small"
           buttonStyle="solid"
         >

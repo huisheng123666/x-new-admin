@@ -19,34 +19,37 @@ export function getStorage(key: string) {
   return value;
 }
 
-export function animatePage() {
+export function animatePage(elInfo: any, theme: 'dark' | 'light') {
   const transition = document.startViewTransition(() => {
     // update DOM status
+    document.documentElement.setAttribute('theme', theme);
   });
 
   // 等待伪元素创建完成：
   transition.ready.then(() => {
-    // 新视图的根元素动画
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const buffer = width * 0.1;
+    const { clientX, clientY } = elInfo;
+    // 计算半径
+    const radius = Math.hypot(
+      Math.max(clientX, window.innerWidth - clientX),
+      Math.max(clientY, window.innerHeight - clientY)
+    )
+    // 剪切路径
+    const clipPath = [
+      `circle(0% at ${clientX}px ${clientY}px)`,
+      `circle(${radius}px at ${clientX}px ${clientY}px)`
+    ]
+
     document.documentElement.animate(
       {
-        clipPath: [
-          `path('M ${-width} 0 L 0,0 L ${-buffer},${height} L ${
-            -width - buffer * 2
-          },${height}')`,
-          `path('M 0 0 L ${
-            width + buffer
-          },0 L ${width},${height} L ${-buffer},${height}')`,
-        ],
+        clipPath: theme === 'light' ? clipPath.reverse() : clipPath
       },
       {
-        duration: 500,
-        easing: "linear",
-        pseudoElement: "::view-transition-new(root)",
+        duration: 600,
+        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+        pseudoElement:
+          theme === 'light' ? '::view-transition-old(root)' : '::view-transition-new(root)'
       }
-    );
+    )
   });
 }
 

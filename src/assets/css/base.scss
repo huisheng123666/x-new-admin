@@ -1,7 +1,29 @@
 @use "animate.scss";
 html {
   font-family: "PingFang SC", "STHeitiSC-Light", "Helvetica-Light", arial,
-    sans-serif, "Droid Sans Fallback";
+  sans-serif, "Droid Sans Fallback";
+
+
+  &::view-transition-new(root),
+  &::view-transition-old(root) {
+    /* 关闭默认动画，否则影响自定义动画的执行 */
+    animation: none;
+  }
+}
+
+html[theme=dark]::view-transition-old(root) {
+  z-index: 1;
+}
+
+html[theme=dark]::view-transition-new(root) {
+  z-index: 999;
+}
+
+::view-transition-old(root) {
+  z-index: 999;
+}
+::view-transition-new(root) {
+  z-index: 1;
 }
 
 :root {

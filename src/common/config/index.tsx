@@ -2,7 +2,6 @@
 
 export function setCssTheme(type: "dark" | "light") {
   const root = document.querySelector(":root") as HTMLElement;
-  // animatePage();
   if (type === "light") {
     root.style.setProperty("--background", "hsl(216 20.11% 95.47%)");
     root.style.setProperty("--foreground", "#171717");
@@ -16,6 +15,7 @@ export function setCssTheme(type: "dark" | "light") {
     root.style.setProperty("--blockborder", "#303030");
     root.style.setProperty("--login-bg", "#14161A");
   }
+  // animatePage();
 }
 
 export function getSysTheme() {
