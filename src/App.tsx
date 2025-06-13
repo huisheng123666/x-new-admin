@@ -11,7 +11,7 @@ import { darkStyleText, getSysTheme, setCssTheme } from "./common/config";
 import {UserProvider} from "@/context/user.tsx";
 
 function App() {
-  const { appTheme } = useAppTheme();
+  const { appTheme, primaryColor } = useAppTheme();
 
   const styleRef = useRef<HTMLStyleElement>();
 
@@ -65,6 +65,9 @@ function App() {
         // 2. 组合使用暗色算法与紧凑算法
         // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
         cssVar: true,
+        token: {
+          colorPrimary: primaryColor
+        }
       }}
     >
       <AntdApp>

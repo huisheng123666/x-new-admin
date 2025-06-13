@@ -1,0 +1,20 @@
+.userinfo {
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  grid-gap: 20px;
+
+  @media screen and (max-width: 1400px) {
+    grid-template-columns: 700px;
+  }
+
+  .avatar {
+    display: block;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: -86px auto 20px auto;
+    border: 2px solid #fff;
+    position: relative;
+  }
+}

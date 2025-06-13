@@ -1,6 +1,6 @@
 import {FC, Suspense, useCallback, useEffect, useRef, useState} from "react";
 import styles from "./layout.module.scss";
-import { useLocation, useOutlet } from "react-router-dom";
+import {Link, useLocation, useOutlet} from "react-router-dom";
 import Slider from "./slider";
 import { Breadcrumb, Button, Dropdown, Radio } from "antd";
 import {
@@ -8,7 +8,7 @@ import {
   MoonFilled,
   SunFilled,
   HourglassFilled,
-  UnorderedListOutlined,
+  UnorderedListOutlined, CheckOutlined, GithubOutlined,
 } from "@ant-design/icons";
 import { useAppTheme } from "@/context/theme";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -17,8 +17,18 @@ import {useUser} from "@/context/user.tsx";
 import {animatePage} from "@/common/utils";
 import {getSysTheme} from "@/common/config";
 
+const primaryColors = [
+  'rgb(93, 135, 255)',
+  'rgb(180, 141, 243)',
+  '#1677ff',
+  'rgb(96, 192, 65)',
+  'rgb(56, 192, 252)',
+  'rgb(249, 144, 31)',
+  'rgb(255, 128, 200)',
+]
+
 const Layout: FC = () => {
-  const { setAppTheme, appTheme, slideExpand, setSlideExpand } = useAppTheme();
+  const { setAppTheme, appTheme, slideExpand, setSlideExpand, setPrimaryColor, primaryColor } = useAppTheme();
   const location = useLocation();
 
   const { logout } = useUser()
@@ -46,7 +56,6 @@ const Layout: FC = () => {
       return
     }
     if (e.target.value === 'system') {
-      console.log(appTheme, sysTheme)
       if (appTheme !== 'system' && sysTheme !== appTheme) {
         animatePage(e.nativeEvent, sysTheme)
       }
@@ -72,6 +81,18 @@ const Layout: FC = () => {
         <Breadcrumb
           items={breadItems}
         />
+        <div className="primary-color">
+          <p>强调色:</p>
+          {
+            primaryColors.map(item => <div
+              key={item}
+              className={['color', item === primaryColor ? 'active' : ''].join(' ')}
+              onClick={() => setPrimaryColor(item)}
+            >
+              {item === primaryColor ? <CheckOutlined /> : null}
+            </div>)
+          }
+        </div>
         <Radio.Group
           value={appTheme}
           onChange={changeTheme}
@@ -88,12 +109,15 @@ const Layout: FC = () => {
             <SunFilled />
           </Radio.Button>
         </Radio.Group>
+        <a href="https://github.com/huisheng123666/x-new-admin" target="_blank">
+          <GithubOutlined />
+        </a>
         <Dropdown
           menu={{
             items: [
               {
                 key: "1",
-                label: <p>个人中心</p>,
+                label: <Link to="/userinfo"><p>个人中心</p></Link>,
               },
               {
                 key: "2",
@@ -102,7 +126,7 @@ const Layout: FC = () => {
             ],
           }}
         >
-          <Button type="text" icon={<UserOutlined />}></Button>
+          <UserOutlined />
         </Dropdown>
       </div>
       <div className="content">

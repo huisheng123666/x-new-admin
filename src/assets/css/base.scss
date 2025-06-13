@@ -1,4 +1,6 @@
 @use "animate.scss";
+@use "userinfo.scss";
+
 html {
   font-family: "PingFang SC", "STHeitiSC-Light", "Helvetica-Light", arial,
   sans-serif, "Droid Sans Fallback";
@@ -90,7 +92,7 @@ html[theme=dark]::view-transition-new(root) {
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 10px;
+    padding: 10px 10px 15px;
     display: flex;
     justify-content: flex-end;
     align-items: center;

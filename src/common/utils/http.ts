@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getStorage } from ".";
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
+// axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 const http = axios.create({
   baseURL: import.meta.env.DEV ? "/dev-api" : "/prod-api",

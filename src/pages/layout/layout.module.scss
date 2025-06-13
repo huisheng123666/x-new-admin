@@ -52,9 +52,50 @@
       background-color: var(--blockbg);
       border-bottom: 1px solid var(--blockborder);
       display: grid;
-      grid-template-columns: auto 1fr auto auto;
-      grid-column-gap: 10px;
+      grid-template-columns: auto 1fr auto auto auto auto;
+      grid-column-gap: 20px;
       align-items: center;
+
+      .primary-color {
+        display: grid;
+        grid-template-columns: auto repeat(7, 20px);
+        grid-column-gap: 10px;
+
+        .color {
+          width: 20px;
+          height: 20px;
+          display: grid;
+          place-content: center;
+          background-color: #1677ff;
+          border-radius: 50%;
+          cursor: pointer;
+          font-size: 14px;
+          color: #fff;
+          font-weight: bold;
+
+          &:nth-child(2) {
+            background-color: rgb(93, 135, 255);
+          }
+          &:nth-child(3) {
+            background-color: rgb(180, 141, 243);
+          }
+          &:nth-child(4) {
+            background-color: #1677ff;
+          }
+          &:nth-child(5) {
+            background-color: rgb(96, 192, 65);
+          }
+          &:nth-child(6) {
+            background-color: rgb(56, 192, 252);
+          }
+          &:nth-child(7) {
+            background-color: rgb(249, 144, 31);
+          }
+          &:nth-child(8) {
+            background-color: rgb(255, 128, 200);
+          }
+        }
+      }
     }
 
     .content {

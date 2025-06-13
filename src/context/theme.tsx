@@ -9,6 +9,8 @@ const ThemeContext = createContext<
       setAppTheme: (theme: AppTheme) => void;
       slideExpand: boolean;
       setSlideExpand: (expand: boolean) => void;
+      primaryColor: string;
+      setPrimaryColor: (color: string) => void;
     }
   | undefined
 >(undefined);
@@ -20,14 +22,18 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     getStorage("appTheme") || "system"
   );
 
+  const [primaryColor, setPrimaryColor] = useState(getStorage('primaryColor') || '#1677ff');
+
   const [slideExpand, setSlideExpand] = useState<boolean>(true);
 
   setStorage("appTheme", appTheme);
 
+  setStorage("primaryColor", primaryColor)
+
   return (
     <ThemeContext.Provider
       children={children}
-      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand }}
+      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand, primaryColor, setPrimaryColor }}
     />
   );
 };

@@ -20,9 +20,15 @@ export default defineConfig({
     proxy: {
       "/dev-api": {
         target: "http://45.192.105.111:8080",
+        // target: "http://localhost:8080",
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/dev-api/, ""),
       },
+      "/profile": {
+        target: "http://45.192.105.111:8080",
+        // target: "http://localhost:8080",
+        changeOrigin: true,
+      }
     },
   },
 });

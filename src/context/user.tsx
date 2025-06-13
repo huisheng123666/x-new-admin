@@ -11,11 +11,18 @@ import {
   useState,
 } from "react";
 
-interface Userinfo {
-  id: number;
-  name: string;
+export interface Userinfo {
+  userId: number;
+  userName: string;
+  phonenumber: string;
+  email: string;
+  dept: Dept;
   avatar: string;
-  admin: boolean
+  admin: boolean;
+  roles: Role[];
+  createTime: string
+  nickName: string
+  sex: string
 }
 
 const UserContext = createContext<
@@ -23,7 +30,7 @@ const UserContext = createContext<
       userinfo: Userinfo | undefined;
       roles: string[];
       permissions: string[];
-      setUserinfo: (userinfo: Userinfo) => void;
+      setUserinfo: (userinfo: (prevState: Userinfo | undefined) => any) => void;
       setRoles: (roles: string[]) => void;
       setPermissions: (permissions: string[]) => void;
       isLogin: boolean;
@@ -51,12 +58,19 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { httpGet, loading } = useHttp(!!getStorage("token"));
 
   const getUserinfo = useCallback(() => {
-    httpGet("/getInfo", null, false).then((data: any) => {
+    httpGet<{ user: Userinfo, roles: string[], permissions: string[] }>("/getInfo", null, false).then((data) => {
       setUserinfo({
-        id: data.user.userId,
-        name: data.user.userName,
+        userId: data.user.userId,
+        userName: data.user.userName,
         avatar: data.user.avatar,
-        admin: data.user.admin
+        admin: data.user.admin,
+        phonenumber: data.user.phonenumber,
+        email: data.user.email,
+        dept: data.user.dept,
+        roles: data.user.roles,
+        createTime: data.user.createTime,
+        nickName: data.user.nickName,
+        sex: data.user.sex
       });
       setIsLogin(true);
       setRoles(data.roles);

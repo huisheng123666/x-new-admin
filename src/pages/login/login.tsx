@@ -6,6 +6,9 @@ import { useAppTheme } from "@/context/theme";
 import { useHttp } from "@/hooks/useHttp";
 import { setStorage } from "@/common/utils";
 
+// import Cookies from "js-cookie"
+// import { encrypt, decrypt } from '@/common/utils/encrypt.ts'
+
 const Login: FC = () => {
   const { setAppTheme, appTheme } = useAppTheme();
 
@@ -35,6 +38,7 @@ const Login: FC = () => {
       })
         .then((data: any) => {
           setStorage("token", data.token);
+          // Cookies.set("Admin-Token", data.token)
           location.replace("/");
         })
         .catch(() => {

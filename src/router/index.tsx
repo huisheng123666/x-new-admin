@@ -18,6 +18,7 @@ const SysNotice = lazy(() => import("@/pages/system/notice.tsx"));
 const OperLog = lazy(() => import("@/pages/system/log/operlog.tsx"));
 const LoginLog = lazy(() => import("@/pages/system/log/logininfor.tsx"));
 const ToolGen = lazy(() => import("@/pages/tool/gen.tsx"));
+const Userinfo  = lazy(() => import('@/pages/userinfo.tsx'))
 
 const Router: FC = () => {
   const location = useLocation();
@@ -80,6 +81,10 @@ const Router: FC = () => {
           {
             path: 'tool/gen',
             element: <ToolGen />
+          },
+          {
+            path: 'userinfo',
+            element: <Userinfo/>
           }
         ],
       },
