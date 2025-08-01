@@ -67,7 +67,7 @@ function App() {
         cssVar: true,
         token: {
           colorPrimary: primaryColor
-        }
+        },
       }}
     >
       <AntdApp>
