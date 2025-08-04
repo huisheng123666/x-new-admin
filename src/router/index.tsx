@@ -19,6 +19,7 @@ const OperLog = lazy(() => import("@/pages/system/log/operlog.tsx"));
 const LoginLog = lazy(() => import("@/pages/system/log/logininfor.tsx"));
 const ToolGen = lazy(() => import("@/pages/tool/gen.tsx"));
 const Userinfo  = lazy(() => import('@/pages/userinfo.tsx'))
+const DeepSeek = lazy(() => import('@/pages/deepseek/deepseek.tsx'))
 
 const Router: FC = () => {
   const location = useLocation();
@@ -85,6 +86,10 @@ const Router: FC = () => {
           {
             path: 'userinfo',
             element: <Userinfo/>
+          },
+          {
+            path: 'deepseek',
+            element: <DeepSeek/>
           }
         ],
       },

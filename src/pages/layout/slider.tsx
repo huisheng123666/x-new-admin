@@ -17,11 +17,14 @@ interface MenuItem {
 function genMenus(routes: any[], menus: MenuItem[] = [], prevPath = "") {
   routes.forEach((route: any) => {
     if (route.hidden) return;
-    const Icon = (icons as any)[route.meta.icon]
+    if (!route.meta) {
+      route = route.children[0];
+    }
+    const Icon = (icons as any)[route.meta?.icon]
     const menu: MenuItem = {
       key: prevPath + route.path,
       icon: Icon ? <Icon/> : <></>,
-      label: route.meta.title,
+      label: route.meta?.title,
       children: [],
     };
     if (route.children && route.children.length > 0) {
@@ -98,7 +101,7 @@ const Slider: FC = () => {
       <div className="menus" onScroll={menuScroll}>
         <Menu
           selectedKeys={[location.pathname.includes('/system/dict') ? '/system/dict' : location.pathname]}
-          items={menus}
+          items={menus as any}
           theme="light"
           defaultOpenKeys={openKeys}
           subMenuOpenDelay={0.3}

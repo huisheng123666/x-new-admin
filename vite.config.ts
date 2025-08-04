@@ -28,6 +28,11 @@ export default defineConfig({
         target: "http://45.192.105.111:8080",
         // target: "http://localhost:8080",
         changeOrigin: true,
+      },
+      "/deepseekr1": {
+        target: "https://h.xmw.monster",
+        // target: "http://localhost:8080",
+        changeOrigin: true,
       }
     },
   },

@@ -151,6 +151,7 @@ const Layout: FC = () => {
 
 function deepMenu(routes: any[], path: string, res: { title: string }[] = [], prev = '') {
   routes.some(item => {
+    if (!item.meta) return false
     if (path.startsWith(prev + item.path)) {
       res.push({
         title: item.meta.title,

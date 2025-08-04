@@ -1,0 +1,20 @@
+.deepseek {
+  height: 100%;
+  & :global {
+    .ant-card-body {
+      height: calc(100% - var(--ant-card-header-height));
+    }
+    .msg-wrap {
+      height: calc(100% - 32px);
+      overflow-y: auto;
+      .user-msg {
+        height: 32px;
+        line-height: 32px;
+        background: rgb(22, 119, 255);
+        color: #fff;
+        padding: 0 20px;
+        border-radius: 0 12px 0 12px;
+      }
+    }
+  }
+}
