@@ -1,9 +1,11 @@
 import {useState, useRef, useEffect} from 'react';
-import {Button, Card, Input, Space, Typography} from "antd";
+import {Button, Card, Form, Input, Space, Typography} from "antd";
 import styles from './deepseek.module.scss';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import {getStorage, setStorage} from "@/common/utils";
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+import rehypeRaw from 'rehype-raw'
 
 const { Text } = Typography;
 
@@ -47,7 +49,7 @@ const DeepSeekChat = () => {
           model: "deepseek-reasoner",
           messages: newMessages,
           stream: true,
-          max_tokens: 2048
+          max_tokens: 4096
         }),
         signal: controllerRef.current.signal
       });
@@ -128,32 +130,55 @@ const DeepSeekChat = () => {
               </Text>
 
               <div className="msg-content">
-                {msg.role === 'user' ? <div className="user-msg">{msg.content}</div> : <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {msg.content}
-                </ReactMarkdown>}
+                {msg.role === 'user' ? <div className="user-msg">{msg.content}</div> :
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    children={msg.content}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      code(props) {
+                        const {children, className, ...rest} = props
+                        const match = /language-(\w+)/.exec(className || '')
+                        return match ? (
+                          <SyntaxHighlighter
+                            {...rest as any}
+                            PreTag="div"
+                            children={String(children).replace(/\n$/, '')}
+                            language={match[1]}
+                          />
+                        ) : (
+                          <code {...rest} className={className}>
+                            {children}
+                          </code>
+                        )
+                      }
+                    }}
+                  />}
               </div>
             </div>
           ))}
         </div>
-        <Space.Compact style={{ width: '100%' }}>
-          <Input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            disabled={isLoading}
-            placeholder="输入消息..."
-          />
-          {isLoading ? (
-            <Button loading={waiting} onClick={stopGenerating}>停止生成</Button>
-          ) : (
-            <Button type="primary" onClick={sendMessage} disabled={!input.trim()}>
-              发送
-            </Button>
-          )}
-          <Button onClick={() => setMessages([{
-            role: 'system',
-            content: '你好！我是 DeepSeek-Reasoner，专注于逻辑推理和问题解决。我会返回Markdown格式的答案。'
-          }])}>清空</Button>
-        </Space.Compact>
+        <Form onFinish={sendMessage}>
+          <Space.Compact style={{ width: '100%' }}>
+            <Input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              disabled={isLoading}
+              placeholder="输入消息..."
+            />
+            {isLoading ? (
+              <Button loading={waiting} onClick={stopGenerating}>停止生成</Button>
+            ) : (
+              <Button type="primary" htmlType="submit" disabled={!input.trim()}>
+                发送
+              </Button>
+            )}
+            <Button onClick={() => setMessages([{
+              role: 'system',
+              content: '你好！我是 DeepSeek-Reasoner，专注于逻辑推理和问题解决。我会返回Markdown格式的答案。'
+            }])}>清空</Button>
+          </Space.Compact>
+        </Form>
       </Card>
     </>
   );
