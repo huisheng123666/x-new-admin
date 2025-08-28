@@ -94,7 +94,7 @@ const DeptPage: FC = () => {
   ]
 
   return (
-    <div className="page-container">
+    <div className="page-container table-page">
       <div className="form-wrap">
         <Form layout="inline" onFinish={getList} form={form} onReset={resetForm}>
           <Form.Item label="菜单名称" name="deptName">

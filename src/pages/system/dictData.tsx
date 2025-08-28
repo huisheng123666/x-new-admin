@@ -94,7 +94,7 @@ const DictDataPage: FC = () => {
   ]
 
   return (
-    <div className="page-container">
+    <div className="page-container table-page">
       <div className="form-wrap">
         <Form layout="inline" form={form} onFinish={filter} onReset={filter}>
           <Form.Item label="字典名称">

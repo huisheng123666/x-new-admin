@@ -196,3 +196,8 @@ html[theme=dark]::view-transition-new(root) {
 .ant-form-inline {
   grid-row-gap: 10px;
 }
+
+.table-page {
+  height: 100%;
+  overflow: hidden;
+}

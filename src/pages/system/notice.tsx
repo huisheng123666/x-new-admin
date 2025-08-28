@@ -75,7 +75,7 @@ const SysNoticePage: FC = () => {
     },
   ]
 
-  return <div className="page-container">
+  return <div className="page-container table-page">
     <div className="form-wrap">
       <Form layout="inline" form={form} onFinish={filter} onReset={filter}>
         <Form.Item label="公告标题" name="noticeTitle">

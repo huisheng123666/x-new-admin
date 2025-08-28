@@ -153,7 +153,7 @@ const UserSetting = () => {
   ];
 
   return (
-    <div className="page-container">
+    <div className="page-container table-page">
       <div className="form-wrap">
         <Form layout="inline" form={form} onFinish={filter} onReset={filter}>
           <Form.Item label="用户名称" name="userName">
