@@ -1,10 +1,12 @@
-import {FC, useMemo} from "react";
+import {FC, lazy, useMemo} from "react";
 import styles from "./home.module.scss";
 import Icon1 from './icon1@2x.png'
 import Icon2 from './icon2@2x.png'
 import Icon3 from './icon3@2x.png'
 import Icon4 from './icon4@2x.png'
-import ReactECharts from 'echarts-for-react';
+// import ReactECharts from 'echarts-for-react';
+
+const ReactECharts = lazy(() => import('echarts-for-react'))
 
 const mthDataTem = [
   {

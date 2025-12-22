@@ -1,6 +1,6 @@
-import {FC, Suspense, useCallback, useEffect, useRef, useState} from "react";
+import { FC, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./layout.module.scss";
-import {Link, useLocation, useOutlet} from "react-router-dom";
+import { Link, useLocation, useOutlet } from "react-router-dom";
 import Slider from "./slider";
 import { Breadcrumb, Button, Dropdown, Radio } from "antd";
 import {
@@ -8,70 +8,87 @@ import {
   MoonFilled,
   SunFilled,
   HourglassFilled,
-  UnorderedListOutlined, CheckOutlined, GithubOutlined,
+  UnorderedListOutlined,
+  CheckOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 import { useAppTheme } from "@/context/theme";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import PageLoading from "@/components/page-loading/page-loading";
-import {useUser} from "@/context/user.tsx";
-import {animatePage} from "@/common/utils";
-import {getSysTheme} from "@/common/config";
+import { useUser } from "@/context/user.tsx";
+import { animatePage } from "@/common/utils";
+import { getSysTheme } from "@/common/config";
 
 const primaryColors = [
-  'rgb(93, 135, 255)',
-  'rgb(180, 141, 243)',
-  '#1677ff',
-  'rgb(96, 192, 65)',
-  'rgb(56, 192, 252)',
-  'rgb(249, 144, 31)',
-  'rgb(255, 128, 200)',
-]
+  "rgb(93, 135, 255)",
+  "rgb(180, 141, 243)",
+  "#1677ff",
+  "rgb(96, 192, 65)",
+  "rgb(56, 192, 252)",
+  "rgb(249, 144, 31)",
+  "rgb(255, 128, 200)",
+];
 
 const Layout: FC = () => {
-  const { setAppTheme, appTheme, slideExpand, setSlideExpand, setPrimaryColor, primaryColor } = useAppTheme();
+  const {
+    setAppTheme,
+    appTheme,
+    slideExpand,
+    setSlideExpand,
+    setPrimaryColor,
+    primaryColor,
+  } = useAppTheme();
   const location = useLocation();
 
-  const { logout } = useUser()
+  const { logout } = useUser();
 
-  const { routes } = useUser()
+  const { routes } = useUser();
 
-  const [breadItems, setBreadItems] = useState<{ title: string }[]>([])
+  const [breadItems, setBreadItems] = useState<{ title: string }[]>([]);
 
   const currentOutlet = useOutlet();
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      setBreadItems([{ title: '首页' }])
-      return
+    if (location.pathname === "/") {
+      setBreadItems([{ title: "首页" }]);
+      return;
     }
-    setBreadItems(deepMenu(routes, location.pathname, []))
+    setBreadItems(deepMenu(routes, location.pathname, []));
   }, [routes, location]);
 
-  const changeTheme = useCallback((e: any) => {
-    const sysTheme = getSysTheme()
-    if (appTheme === 'system' && e.target.value === sysTheme) {
-      setAppTheme(e.target.value)
-      return
-    }
-    if (e.target.value === 'system') {
-      if (appTheme !== 'system' && sysTheme !== appTheme) {
-        animatePage(e.nativeEvent, sysTheme, () => {
-          setAppTheme(e.target.value)
-        })
+  const changeTheme = useCallback(
+    (e: any) => {
+      const sysTheme = getSysTheme();
+
+      const value = e.target.value;
+
+      if (appTheme === "system" && e.target.value === sysTheme) {
+        setAppTheme(e.target.value);
+        return;
       }
-      // console.log(sysTheme, appTheme)
-    } else {
-      animatePage(e.nativeEvent, e.target.value, () => {
-        setAppTheme(e.target.value)
-      })
-    }
-    // setTimeout(() => {
-    //   setAppTheme(e.target.value)
-    // }, 1)
-    // console.log(e.nativeEvent)
-  }, [appTheme, setAppTheme])
+      if (e.target.value === "system") {
+        if (appTheme !== "system" && sysTheme !== appTheme) {
+          animatePage(e.nativeEvent, sysTheme, () => {
+            setAppTheme(value);
+          });
+        } else {
+          setAppTheme(value);
+        }
+        // console.log(sysTheme, appTheme)
+      } else {
+        animatePage(e.nativeEvent, e.target.value, () => {
+          setAppTheme(value);
+        });
+      }
+      setTimeout(() => {
+        // setAppTheme(e.target.value);
+      }, 1);
+      // console.log(e.nativeEvent)
+    },
+    [appTheme, setAppTheme]
+  );
 
   return (
     <div className={styles.layout}>
@@ -82,20 +99,20 @@ const Layout: FC = () => {
           icon={<UnorderedListOutlined />}
           onClick={() => setSlideExpand(!slideExpand)}
         />
-        <Breadcrumb
-          items={breadItems}
-        />
+        <Breadcrumb items={breadItems} />
         <div className="primary-color">
           <p>强调色:</p>
-          {
-            primaryColors.map(item => <div
+          {primaryColors.map((item) => (
+            <div
               key={item}
-              className={['color', item === primaryColor ? 'active' : ''].join(' ')}
+              className={["color", item === primaryColor ? "active" : ""].join(
+                " "
+              )}
               onClick={() => setPrimaryColor(item)}
             >
               {item === primaryColor ? <CheckOutlined /> : null}
-            </div>)
-          }
+            </div>
+          ))}
         </div>
         <Radio.Group
           value={appTheme}
@@ -121,7 +138,11 @@ const Layout: FC = () => {
             items: [
               {
                 key: "1",
-                label: <Link to="/userinfo"><p>个人中心</p></Link>,
+                label: (
+                  <Link to="/userinfo">
+                    <p>个人中心</p>
+                  </Link>
+                ),
               },
               {
                 key: "2",
@@ -153,20 +174,25 @@ const Layout: FC = () => {
   );
 };
 
-function deepMenu(routes: any[], path: string, res: { title: string }[] = [], prev = '') {
-  routes.some(item => {
-    if (!item.meta) return false
+function deepMenu(
+  routes: any[],
+  path: string,
+  res: { title: string }[] = [],
+  prev = ""
+) {
+  routes.some((item) => {
+    if (!item.meta) return false;
     if (path.startsWith(prev + item.path)) {
       res.push({
         title: item.meta.title,
-      })
+      });
       if (item.children && item.children.length) {
-        deepMenu(item.children, path, res, prev + item.path + '/')
+        deepMenu(item.children, path, res, prev + item.path + "/");
       }
-      return true
+      return true;
     }
-  })
-  return res
+  });
+  return res;
 }
 
 export default Layout;

@@ -8,7 +8,7 @@ import "dayjs/locale/zh-cn";
 import { theme as antdTheme } from "antd";
 import { useAppTheme } from "./context/theme";
 import { darkStyleText, getSysTheme, setCssTheme } from "./common/config";
-import {UserProvider} from "@/context/user.tsx";
+import { UserProvider } from "@/context/user.tsx";
 
 function App() {
   const { appTheme, primaryColor } = useAppTheme();
@@ -66,7 +66,7 @@ function App() {
         // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
         cssVar: true,
         token: {
-          colorPrimary: primaryColor
+          colorPrimary: primaryColor,
         },
       }}
     >
