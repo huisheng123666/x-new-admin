@@ -57,15 +57,19 @@ const Layout: FC = () => {
     }
     if (e.target.value === 'system') {
       if (appTheme !== 'system' && sysTheme !== appTheme) {
-        animatePage(e.nativeEvent, sysTheme)
+        animatePage(e.nativeEvent, sysTheme, () => {
+          setAppTheme(e.target.value)
+        })
       }
       // console.log(sysTheme, appTheme)
     } else {
-      animatePage(e.nativeEvent, e.target.value)
+      animatePage(e.nativeEvent, e.target.value, () => {
+        setAppTheme(e.target.value)
+      })
     }
-    setTimeout(() => {
-      setAppTheme(e.target.value)
-    }, 1)
+    // setTimeout(() => {
+    //   setAppTheme(e.target.value)
+    // }, 1)
     // console.log(e.nativeEvent)
   }, [appTheme, setAppTheme])
 

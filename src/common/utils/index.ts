@@ -19,7 +19,7 @@ export function getStorage(key: string) {
   return value;
 }
 
-export function animatePage(elInfo: any, theme: 'dark' | 'light') {
+export function animatePage(elInfo: any, theme: 'dark' | 'light', readyCallback?: () => void) {
   const transition = document.startViewTransition(() => {
     // update DOM status
     document.documentElement.setAttribute('theme', theme);
@@ -27,6 +27,9 @@ export function animatePage(elInfo: any, theme: 'dark' | 'light') {
 
   // 等待伪元素创建完成：
   transition.ready.then(() => {
+    if (readyCallback) {
+      readyCallback()
+    }
     const { clientX, clientY } = elInfo;
     // 计算半径
     const radius = Math.hypot(
