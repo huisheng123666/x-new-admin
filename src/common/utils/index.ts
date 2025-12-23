@@ -1,4 +1,6 @@
+import { AppTheme } from "@/context/theme";
 import { Dayjs } from "dayjs";
+import { MutableRefObject } from "react";
 
 export function setStorage(
   key: string,
@@ -22,8 +24,16 @@ export function getStorage(key: string) {
 export function animatePage(
   elInfo: any,
   theme: "dark" | "light",
-  readyCallback?: () => void
+  readyCallback: (theme: AppTheme) => void,
+  isAnimate: MutableRefObject<boolean>
 ) {
+  if (!document.startViewTransition) {
+    document.documentElement.setAttribute("theme", theme);
+    if (readyCallback) {
+      readyCallback(theme);
+    }
+    return
+  }
   const transition = document.startViewTransition(() => {
     // update DOM status
     document.documentElement.setAttribute("theme", theme);
@@ -32,8 +42,9 @@ export function animatePage(
   // 等待伪元素创建完成：
   transition.ready.then(() => {
     if (readyCallback) {
-      readyCallback();
+      readyCallback(theme);
     }
+    isAnimate.current = true;
     const { clientX, clientY } = elInfo;
     // 计算半径
     const radius = Math.hypot(
@@ -46,21 +57,23 @@ export function animatePage(
       `circle(${radius}px at ${clientX}px ${clientY}px)`,
     ];
 
-    setTimeout(() => {
-      document.documentElement.animate(
-        {
-          clipPath: theme === "light" ? clipPath.reverse() : clipPath,
-        },
-        {
-          duration: 600,
-          easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
-          pseudoElement:
-            theme === "light"
-              ? "::view-transition-old(root)"
-              : "::view-transition-new(root)",
-        }
-      );
-    }, 10);
+    document.documentElement.animate(
+      {
+        clipPath: theme === "light" ? clipPath.reverse() : clipPath,
+      },
+      {
+        duration: 600,
+        easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
+        pseudoElement:
+          theme === "light"
+            ? "::view-transition-old(root)"
+            : "::view-transition-new(root)",
+      }
+    );
+  });
+
+  transition.finished.finally(() => {
+    isAnimate.current = false;
   });
 }
 

@@ -1,4 +1,4 @@
-import { FC, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { FC, memo, Suspense, useEffect, useRef, useState } from "react";
 import styles from "./layout.module.scss";
 import { Link, useLocation, useOutlet } from "react-router-dom";
 import Slider from "./slider";
@@ -16,8 +16,6 @@ import { useAppTheme } from "@/context/theme";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import PageLoading from "@/components/page-loading/page-loading";
 import { useUser } from "@/context/user.tsx";
-import { animatePage } from "@/common/utils";
-import { getSysTheme } from "@/common/config";
 
 const primaryColors = [
   "rgb(93, 135, 255)",
@@ -31,8 +29,8 @@ const primaryColors = [
 
 const Layout: FC = () => {
   const {
-    setAppTheme,
     appTheme,
+    changeTheme,
     slideExpand,
     setSlideExpand,
     setPrimaryColor,
@@ -57,38 +55,6 @@ const Layout: FC = () => {
     }
     setBreadItems(deepMenu(routes, location.pathname, []));
   }, [routes, location]);
-
-  const changeTheme = useCallback(
-    (e: any) => {
-      const sysTheme = getSysTheme();
-
-      const value = e.target.value;
-
-      if (appTheme === "system" && e.target.value === sysTheme) {
-        setAppTheme(e.target.value);
-        return;
-      }
-      if (e.target.value === "system") {
-        if (appTheme !== "system" && sysTheme !== appTheme) {
-          animatePage(e.nativeEvent, sysTheme, () => {
-            setAppTheme(value);
-          });
-        } else {
-          setAppTheme(value);
-        }
-        // console.log(sysTheme, appTheme)
-      } else {
-        animatePage(e.nativeEvent, e.target.value, () => {
-          setAppTheme(value);
-        });
-      }
-      setTimeout(() => {
-        // setAppTheme(e.target.value);
-      }, 1);
-      // console.log(e.nativeEvent)
-    },
-    [appTheme, setAppTheme]
-  );
 
   return (
     <div className={styles.layout}>
@@ -195,4 +161,4 @@ function deepMenu(
   return res;
 }
 
-export default Layout;
+export default memo(Layout);

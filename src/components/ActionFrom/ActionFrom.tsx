@@ -50,7 +50,7 @@ function ActionFrom<T>({children, actionData: { type, open, row }, url, close, u
       form.resetFields()
       close()
     }}
-    destroyOnClose
+    destroyOnHidden
     onOk={() => form.submit()}
     confirmLoading={loading}
   >

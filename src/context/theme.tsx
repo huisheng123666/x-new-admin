@@ -1,21 +1,34 @@
-import { getStorage, setStorage } from "@/common/utils";
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import { getSysTheme, setCssTheme } from "@/common/config";
+import { animatePage, getStorage, setStorage } from "@/common/utils";
+import { createContext, FC, ReactNode, useContext, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export type AppTheme = "system" | "light" | "dark";
 
 const ThemeContext = createContext<
   | {
       appTheme: AppTheme;
+      orgSysTheme: AppTheme;
       setAppTheme: (theme: AppTheme) => void;
       slideExpand: boolean;
       setSlideExpand: (expand: boolean) => void;
       primaryColor: string;
       setPrimaryColor: (color: string) => void;
+      changeTheme: (e: any) => void;
     }
   | undefined
 >(undefined);
 
 ThemeContext.displayName = "ThemeContext";
+
+function subscribe(callback: () => void) {
+  const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+
+  mediaQueryList.addEventListener("change", callback);
+
+  return () => {
+    mediaQueryList.removeEventListener("change", callback);
+  };
+}
 
 export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [appTheme, setAppTheme] = useState<"system" | "light" | "dark">(
@@ -30,10 +43,50 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   setStorage("primaryColor", primaryColor)
 
+
+  const orgSysTheme = useSyncExternalStore(subscribe, () => {
+    if (appTheme === "system") {
+      setCssTheme(getSysTheme());
+    }
+    return getSysTheme();
+  })
+
+  const changeAppTheme = (value: AppTheme) => {    
+    setAppTheme(value);
+    const currentTheme = value === "system" ? getSysTheme() : value;
+    setCssTheme(currentTheme);
+  }
+
+  const isAnimate = useRef(false);
+
+  const changeTheme = (e: any) => {            
+      if (isAnimate.current) return;
+      const sysTheme = getSysTheme();
+      const value = e.target.value;      
+      
+      if (appTheme === "system" && value === sysTheme) {
+        changeAppTheme(value);
+        return;
+      }
+      if (value === "system") {
+        if (sysTheme !== appTheme) {
+          animatePage(e.nativeEvent, sysTheme, () => changeAppTheme(value), isAnimate);
+        } else {
+          changeAppTheme(value);
+        }
+        return;
+      }
+      animatePage(e.nativeEvent, e.target.value, changeAppTheme, isAnimate);
+    }
+
+    useEffect(() => {
+      setCssTheme(appTheme === "system" ? getSysTheme() : appTheme);
+    }, [appTheme]);
+
   return (
     <ThemeContext.Provider
       children={children}
-      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand, primaryColor, setPrimaryColor }}
+      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand, primaryColor, setPrimaryColor, changeTheme, orgSysTheme }}
     />
   );
 };
