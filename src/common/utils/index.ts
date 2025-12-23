@@ -29,22 +29,18 @@ export function animatePage(
 ) {
   if (!document.startViewTransition) {
     document.documentElement.setAttribute("theme", theme);
-    if (readyCallback) {
-      readyCallback(theme);
-    }
+    readyCallback(theme);
     return
   }
   const transition = document.startViewTransition(() => {
+    isAnimate.current = true;
     // update DOM status
+    readyCallback(theme);
     document.documentElement.setAttribute("theme", theme);
   });
 
   // 等待伪元素创建完成：
   transition.ready.then(() => {
-    if (readyCallback) {
-      readyCallback(theme);
-    }
-    isAnimate.current = true;
     const { clientX, clientY } = elInfo;
     // 计算半径
     const radius = Math.hypot(

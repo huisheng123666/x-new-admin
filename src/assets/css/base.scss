@@ -11,6 +11,13 @@ html {
     /* 关闭默认动画，否则影响自定义动画的执行 */
     animation: none;
   }
+
+  --background: hsl(216 20.11% 95.47%);
+  --foreground: #171717;
+  --blockbg: #fff;
+  --blockborder: hsl(240 5.9% 90%);
+  --table-wrapper-height: 0;
+  --login-bg: hsl(216 20.11% 95.47%);
 }
 
 html[theme=dark]::view-transition-old(root) {
@@ -28,13 +35,12 @@ html[theme=dark]::view-transition-new(root) {
   z-index: 1;
 }
 
-:root {
-  --background: hsl(216 20.11% 95.47%);
-  --foreground: #171717;
-  --blockbg: #fff;
-  --blockborder: hsl(240 5.9% 90%);
-  --table-wrapper-height: 0;
-  --login-bg: hsl(216 20.11% 95.47%);
+html[theme=dark] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --blockbg: #141414;
+  --blockborder: #303030;
+  --login-bg: #14161A;
 }
 
 .ellipsis-one {

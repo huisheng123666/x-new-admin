@@ -1,4 +1,4 @@
-import { getSysTheme, setCssTheme } from "@/common/config";
+import { getSysTheme } from "@/common/config";
 import { animatePage, getStorage, setStorage } from "@/common/utils";
 import { createContext, FC, ReactNode, useContext, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
@@ -46,15 +46,13 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const orgSysTheme = useSyncExternalStore(subscribe, () => {
     if (appTheme === "system") {
-      setCssTheme(getSysTheme());
+      document.documentElement.setAttribute("theme", getSysTheme());
     }
     return getSysTheme();
   })
 
   const changeAppTheme = (value: AppTheme) => {    
     setAppTheme(value);
-    const currentTheme = value === "system" ? getSysTheme() : value;
-    setCssTheme(currentTheme);
   }
 
   const isAnimate = useRef(false);
@@ -80,7 +78,7 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     useEffect(() => {
-      setCssTheme(appTheme === "system" ? getSysTheme() : appTheme);
+      document.documentElement.setAttribute("theme", appTheme === "system" ? getSysTheme() : appTheme);
     }, [appTheme]);
 
   return (

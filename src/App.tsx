@@ -31,7 +31,7 @@ function App() {
             : antdTheme.defaultAlgorithm,
         // 2. 组合使用暗色算法与紧凑算法
         // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
-        // cssVar: true,
+        cssVar: true,
         token: {
           colorPrimary: primaryColor,
         },
