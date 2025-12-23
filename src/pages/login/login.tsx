@@ -10,7 +10,7 @@ import { setStorage } from "@/common/utils";
 // import { encrypt, decrypt } from '@/common/utils/encrypt.ts'
 
 const Login: FC = () => {
-  const { setAppTheme, appTheme } = useAppTheme();
+  const { appTheme, changeTheme } = useAppTheme();
 
   const [uuid, setUuid] = useState("");
   const [codeImg, setCodeImg] = useState("");
@@ -65,7 +65,7 @@ const Login: FC = () => {
         <div className="theme">
           <Radio.Group
             value={appTheme}
-            onChange={(e) => setAppTheme(e.target.value)}
+            onChange={changeTheme}
             size="small"
             buttonStyle="solid"
           >
