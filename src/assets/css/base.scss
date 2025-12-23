@@ -34,16 +34,6 @@ html[theme="dark"]::view-transition-new(root) {
   z-index: 1;
 }
 
-::view-transition-group(*),
-::view-transition-old(*),
-::view-transition-new(*) {
-  /* 启用硬件加速，并优化渲染 */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  /* 另一种可选的硬件加速触发方式 */
-  transform: translateZ(0);
-}
-
 html[theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
