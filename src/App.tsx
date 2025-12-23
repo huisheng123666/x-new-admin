@@ -13,7 +13,6 @@ function App() {
   const { appTheme, primaryColor, orgSysTheme } = useAppTheme();
 
   const theme = useMemo(() => {
-    
     if (appTheme === "system") {
       return orgSysTheme;
     }

@@ -3,8 +3,7 @@
 
 html {
   font-family: "PingFang SC", "STHeitiSC-Light", "Helvetica-Light", arial,
-  sans-serif, "Droid Sans Fallback";
-
+    sans-serif, "Droid Sans Fallback";
 
   &::view-transition-new(root),
   &::view-transition-old(root) {
@@ -20,11 +19,11 @@ html {
   --login-bg: hsl(216 20.11% 95.47%);
 }
 
-html[theme=dark]::view-transition-old(root) {
+html[theme="dark"]::view-transition-old(root) {
   z-index: 1;
 }
 
-html[theme=dark]::view-transition-new(root) {
+html[theme="dark"]::view-transition-new(root) {
   z-index: 999;
 }
 
@@ -42,15 +41,15 @@ html[theme=dark]::view-transition-new(root) {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   /* 另一种可选的硬件加速触发方式 */
-  // transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-html[theme=dark] {
+html[theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   --blockbg: #141414;
   --blockborder: #303030;
-  --login-bg: #14161A;
+  --login-bg: #14161a;
 }
 
 .ellipsis-one {

@@ -34,7 +34,7 @@ export function animatePage(
   if (!document.startViewTransition) {
     document.documentElement.setAttribute("theme", theme);
     readyCallback(theme);
-    return
+    return;
   }
   const transition = document.startViewTransition(async () => {
     isAnimate.current = true;
@@ -63,6 +63,7 @@ export function animatePage(
         clipPath: theme === "light" ? clipPath.reverse() : clipPath,
       },
       {
+        fill: "both",
         duration: 600,
         easing: "cubic-bezier(0.215, 0.61, 0.355, 1)",
         pseudoElement:
