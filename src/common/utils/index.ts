@@ -2,6 +2,10 @@ import { AppTheme } from "@/context/theme";
 import { Dayjs } from "dayjs";
 import { MutableRefObject } from "react";
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function setStorage(
   key: string,
   value: string | Record<string, any> | any[]
@@ -32,11 +36,12 @@ export function animatePage(
     readyCallback(theme);
     return
   }
-  const transition = document.startViewTransition(() => {
+  const transition = document.startViewTransition(async () => {
     isAnimate.current = true;
     // update DOM status
     readyCallback(theme);
     document.documentElement.setAttribute("theme", theme);
+    await sleep(1);
   });
 
   // 等待伪元素创建完成：
