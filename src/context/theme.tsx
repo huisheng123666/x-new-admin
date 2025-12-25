@@ -1,5 +1,5 @@
 import { getSysTheme } from "@/common/config";
-import { animatePage, getStorage, setStorage } from "@/common/utils";
+import { animatePage, getStorage, setRootTheme, setStorage } from "@/common/utils";
 import { createContext, FC, ReactNode, useContext, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 export type AppTheme = "system" | "light" | "dark";
@@ -42,17 +42,21 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   setStorage("appTheme", appTheme);
 
   setStorage("primaryColor", primaryColor)
-
+  
+  const appThemePromise = useRef<(() => void) | null>(null);
 
   const orgSysTheme = useSyncExternalStore(subscribe, () => {
     if (appTheme === "system") {
-      document.documentElement.setAttribute("theme", getSysTheme());
+      setRootTheme(getSysTheme());
     }
     return getSysTheme();
   })
 
   const changeAppTheme = (value: AppTheme) => {    
     setAppTheme(value);
+    return new Promise<void>((resolve) => {
+      appThemePromise.current = resolve;
+    });
   }
 
   const isAnimate = useRef(false);
@@ -78,7 +82,8 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     useEffect(() => {
-      document.documentElement.setAttribute("theme", appTheme === "system" ? getSysTheme() : appTheme);
+      setRootTheme(appTheme === "system" ? getSysTheme() : appTheme);
+      appThemePromise.current?.();
     }, [appTheme]);
 
   return (

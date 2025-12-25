@@ -25,6 +25,12 @@ export function getStorage(key: string) {
   return value;
 }
 
+export function setRootTheme(theme: AppTheme) {
+  document.documentElement.setAttribute("theme", theme);
+  const root = document.querySelector(":root") as HTMLElement;
+  root.style.setProperty("color-scheme", theme);
+}
+
 export function animatePage(
   elInfo: any,
   theme: "dark" | "light",
@@ -32,16 +38,12 @@ export function animatePage(
   isAnimate: MutableRefObject<boolean>
 ) {
   if (!document.startViewTransition) {
-    document.documentElement.setAttribute("theme", theme);
     readyCallback(theme);
     return;
   }
   const transition = document.startViewTransition(async () => {
     isAnimate.current = true;
-    // update DOM status
-    readyCallback(theme);
-    document.documentElement.setAttribute("theme", theme);
-    await sleep(1);
+    await readyCallback(theme);
   });
 
   // 等待伪元素创建完成：
