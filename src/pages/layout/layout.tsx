@@ -1,4 +1,4 @@
-import { FC, memo, Suspense, useEffect, useRef, useState } from "react";
+import { FC, Suspense, useEffect, useRef, useState } from "react";
 import styles from "./layout.module.scss";
 import { Link, useLocation, useOutlet } from "react-router-dom";
 import Slider from "./slider";
@@ -161,4 +161,4 @@ function deepMenu(
   return res;
 }
 
-export default memo(Layout);
+export default Layout;
