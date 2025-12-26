@@ -10,24 +10,23 @@ import { useAppTheme } from "./context/theme";
 import { UserProvider } from "@/context/user.tsx";
 
 function App() {
-  const { appTheme, primaryColor, orgSysTheme } = useAppTheme();
+  const { appTheme, primaryColor, orgSysTheme, displaySize } = useAppTheme();
 
   const theme = useMemo(() => {
-    if (appTheme === "system") {
-      return orgSysTheme;
+    const current = appTheme === "system" ? orgSysTheme : appTheme;
+    const orgTheme = current === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm
+    if (displaySize === 'compact') {
+      return [orgTheme, antdTheme.compactAlgorithm];
     }
-    return appTheme;
-  }, [appTheme, orgSysTheme]);
+    return orgTheme
+  }, [appTheme, orgSysTheme, displaySize]);
 
   return (
     <ConfigProvider
       locale={zhCN}
       theme={{
         // 1. 单独使用暗色算法
-        algorithm:
-          theme === "dark"
-            ? antdTheme.darkAlgorithm
-            : antdTheme.defaultAlgorithm,
+        algorithm: theme,
         // 2. 组合使用暗色算法与紧凑算法
         // algorithm: [theme.darkAlgorithm, theme.compactAlgorithm],
         cssVar: true,

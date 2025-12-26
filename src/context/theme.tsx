@@ -4,6 +4,8 @@ import { createContext, FC, ReactNode, useContext, useEffect, useRef, useState, 
 
 export type AppTheme = "system" | "light" | "dark";
 
+export type DisplaySize = "default" | "compact";
+
 const ThemeContext = createContext<
   | {
       appTheme: AppTheme;
@@ -14,6 +16,8 @@ const ThemeContext = createContext<
       primaryColor: string;
       setPrimaryColor: (color: string) => void;
       changeTheme: (e: any) => void;
+      displaySize: DisplaySize;
+      setDisplaySize: (size: DisplaySize) => void;
     }
   | undefined
 >(undefined);
@@ -35,6 +39,8 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     getStorage("appTheme") || "system"
   );
 
+  const [displaySize, setDisplaySize] = useState<DisplaySize>(getStorage('displaySize') || "default");
+
   const [primaryColor, setPrimaryColor] = useState(getStorage('primaryColor') || '#1677ff');
 
   const [slideExpand, setSlideExpand] = useState<boolean>(true);
@@ -42,6 +48,8 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   setStorage("appTheme", appTheme);
 
   setStorage("primaryColor", primaryColor)
+
+  setStorage("displaySize", displaySize);
   
   const appThemePromise = useRef<(() => void) | null>(null);
 
@@ -89,7 +97,7 @@ export const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <ThemeContext.Provider
       children={children}
-      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand, primaryColor, setPrimaryColor, changeTheme, orgSysTheme }}
+      value={{ appTheme, setAppTheme, slideExpand, setSlideExpand, primaryColor, setPrimaryColor, changeTheme, orgSysTheme, displaySize, setDisplaySize }}
     />
   );
 };

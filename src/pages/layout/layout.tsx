@@ -2,7 +2,7 @@ import { FC, Suspense, useEffect, useRef, useState } from "react";
 import styles from "./layout.module.scss";
 import { Link, useLocation, useOutlet } from "react-router-dom";
 import Slider from "./slider";
-import { Breadcrumb, Button, Dropdown, Radio } from "antd";
+import { Breadcrumb, Button, Drawer, Dropdown, Radio } from "antd";
 import {
   UserOutlined,
   MoonFilled,
@@ -11,6 +11,7 @@ import {
   UnorderedListOutlined,
   CheckOutlined,
   GithubOutlined,
+  ToolOutlined,
 } from "@ant-design/icons";
 import { useAppTheme } from "@/context/theme";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -35,6 +36,8 @@ const Layout: FC = () => {
     setSlideExpand,
     setPrimaryColor,
     primaryColor,
+    displaySize,
+    setDisplaySize
   } = useAppTheme();
   const location = useLocation();
 
@@ -47,6 +50,8 @@ const Layout: FC = () => {
   const currentOutlet = useOutlet();
 
   const nodeRef = useRef<HTMLDivElement>(null);
+
+  const [openSetting, setOpenSetting] = useState(false);
 
   useEffect(() => {
     if (location.pathname === "/") {
@@ -66,20 +71,7 @@ const Layout: FC = () => {
           onClick={() => setSlideExpand(!slideExpand)}
         />
         <Breadcrumb items={breadItems} />
-        <div className="primary-color">
-          <p>强调色:</p>
-          {primaryColors.map((item) => (
-            <div
-              key={item}
-              className={["color", item === primaryColor ? "active" : ""].join(
-                " "
-              )}
-              onClick={() => setPrimaryColor(item)}
-            >
-              {item === primaryColor ? <CheckOutlined /> : null}
-            </div>
-          ))}
-        </div>
+        
         <Radio.Group
           value={appTheme}
           onChange={changeTheme}
@@ -99,6 +91,7 @@ const Layout: FC = () => {
         <a href="https://github.com/huisheng123666/x-new-admin" target="_blank">
           <GithubOutlined />
         </a>
+        <Button onClick={() => setOpenSetting(true)} style={{ padding: 0, margin: 0, width: 'auto' }} icon={<ToolOutlined />} type="text"></Button>
         <Dropdown
           menu={{
             items: [
@@ -136,6 +129,43 @@ const Layout: FC = () => {
           </SwitchTransition>
         </Suspense>
       </div>
+
+      <Drawer
+        title="设置"
+        width={350}
+        closable={{ 'aria-label': 'Close Button' }}
+        onClose={() => setOpenSetting(false)}
+        open={openSetting}
+      >
+        <div className={styles['primary-color']}>
+          <p>强调色:</p>
+          {primaryColors.map((item) => (
+            <div
+              key={item}
+              className={["color", item === primaryColor ? "active" : ""].join(
+                " "
+              )}
+              onClick={() => setPrimaryColor(item)}
+            >
+              {item === primaryColor ? <CheckOutlined /> : null}
+            </div>
+          ))}
+        </div>
+
+        <div className={styles['display-size']}>
+          <p>显示大小:</p>
+          <Radio.Group
+            value={displaySize}
+            buttonStyle="solid"
+            onChange={(e) => {
+              setDisplaySize(e.target.value);
+            }}
+          >
+            <Radio.Button value="default">默认</Radio.Button>
+            <Radio.Button value="compact">紧凑</Radio.Button>
+          </Radio.Group>
+        </div>
+      </Drawer>
     </div>
   );
 };
